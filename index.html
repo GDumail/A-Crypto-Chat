@@ -68,23 +68,6 @@
                 margin-top: 20px;
                 margin-bottom: 20px;
             }
-            #messages li:nth-child(odd) {
-                color: grey;
-                font-style: italic;
-                font-size: 12px;
-                margin-bottom: 5px;
-                margin-left: 15px;
-            }
-            #messages li:nth-child(even) {
-                padding: 10px 15px;
-                background: var(--bubble-color);
-                color: white;
-                margin-bottom: 20px;
-                margin-left: 10px;
-                display: inline-block;
-                border-radius: 20px;
-                max-width: 75%;
-            }
             #username {
                 width: 250px;
                 margin-bottom: 20px;
@@ -127,12 +110,54 @@
             }
             document.getElementById("form").addEventListener("submit", onFormSubmit);
             socket.on("chat message", (msg) => {
+                let lastOwner = "";
+                const days = {
+                    1: "Monday",
+                    2: "Tuesday",
+                    3: "Wednesday",
+                    4: "Thursday",
+                    5: "Friday",
+                    6: "Saturday",
+                    7: "Synday"
+                };
+                const realDate = new Date();
+                if (document.getElementById("messages").childNodes.length !== 0)
+                    lastOwner = document.getElementById("messages").lastChild.previousElementSibling.previousElementSibling.innerHTML;
+
                 let owner = document.createElement("li");
                 let message = document.createElement("li");
+                let date = document.createElement("label");
+
                 owner.innerHTML = msg.owner;
                 message.innerHTML = msg.value;
+                date.innerHTML = days[realDate.getDay()] + " at " + realDate.getHours() + ':' + (realDate.getMinutes() < 10 ? '0' : '') + realDate.getMinutes();
+
+                owner.style.color = "grey";
+                owner.style.fontStyle = "italic";
+                owner.style.fontSize = "12px";
+                owner.style.marginBottom = "5px";
+                owner.style.marginLeft = "15px";
+                if (lastOwner === msg.owner) {
+                    owner.style.fontSize = "0px";
+                    document.getElementById("messages").lastChild.previousElementSibling.style.marginBottom = "5px";
+                }
+
+                message.style.padding = "10px 15px";
+                message.style.background = "var(--bubble-color)";
+                message.style.color = "white";
+                message.style.marginBottom = "20px";
+                message.style.marginLeft = "10px";
+                message.style.display = "inline-block";
+                message.style.borderRadius = "20px";
+                message.style.maxWidth = "75%";
+
+                date.style.color = "white";
+                date.style.marginLeft = "15px";
+
                 document.getElementById("messages").appendChild(owner);
                 document.getElementById("messages").appendChild(message);
+                document.getElementById("messages").appendChild(date);
+                document.getElementById("messages").scrollTop = owner.offsetHeight + owner.offsetTop + message.offsetHeight + message.offsetTop;
             });
         </script>
     </body>
