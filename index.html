@@ -59,20 +59,53 @@
                 background: var(--light-color);
                 box-shadow: 0 0px 50px rgba(255, 255, 255, 0.3);
             }
+            label {
+                color: white;
+            }
             #messages {
                 list-style-type: none;
                 margin: 0;
                 padding: 0;
-                height: calc(100% - 160px);
+                height: calc(100% - 140px);
                 overflow-y: scroll;
                 margin-top: 20px;
                 margin-bottom: 20px;
             }
             #username {
                 width: 250px;
-                margin-bottom: 20px;
                 margin-top: 10px;
                 background: var(--dark-color);
+            }
+            .container {
+                margin-bottom: 40px;
+                width: 100%;
+            }
+            .inside-container {
+                display: flex;
+                justify-content: flex-start;
+            }
+            .owner {
+                color: grey;
+                font-style: italic;
+                font-size: 12px;
+                margin-bottom: 5px;
+            }
+            .message {
+                background: var(--bubble-color);
+                border-radius: 20px;
+                padding: 10px 15px;
+                display: inline-block;
+                color: "white";
+                max-width: 60%;
+            }
+            .date {
+                padding: 10px;
+            }
+            .myself {
+                margin-right: 15px;
+            }
+            .other {
+                margin-left: 15px;
             }
             .scroll::-webkit-scrollbar {
                 width: 10px;
@@ -90,20 +123,22 @@
     </head>
     <body>
         <form id="form" action="">
-            <input id="username" maxlength="15" placeholder="Username" value="Unnamed" required/>
+            <input id="username" maxlength="15" placeholder="Username" required/>
             <div class="separator"></div>
             <ul id="messages" class="scroll"></ul>
-            <input id="message" autocomplete="off" placeholder="message" required/><button>Send</button>
+            <input id="message" autocomplete="off" placeholder="Message" required/><button>Send</button>
         </form>
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script>
             const socket = io();
+            const id = '_' + Math.random().toString(36).substr(2, 9);
             async function onFormSubmit(event) {
                 event.preventDefault();
                 let message = {};
                 message.owner = document.getElementById("username").value;
                 message.value = document.getElementById("message").value;
+                message.id = id;
                 socket.emit("chat message", message);
                 document.getElementById("message").value = "";
                 return false;
@@ -111,53 +146,48 @@
             document.getElementById("form").addEventListener("submit", onFormSubmit);
             socket.on("chat message", (msg) => {
                 let lastOwner = "";
-                const days = {
-                    1: "Monday",
-                    2: "Tuesday",
-                    3: "Wednesday",
-                    4: "Thursday",
-                    5: "Friday",
-                    6: "Saturday",
-                    7: "Synday"
-                };
+                const days = { 1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday", 7: "Synday" };
                 const realDate = new Date();
                 if (document.getElementById("messages").childNodes.length !== 0)
-                    lastOwner = document.getElementById("messages").lastChild.previousElementSibling.previousElementSibling.innerHTML;
+                    lastOwner = document.getElementById("messages").lastChild.firstChild;
 
+                let container = document.createElement("div");
+                let insideContainer = document.createElement("div");
                 let owner = document.createElement("li");
                 let message = document.createElement("li");
                 let date = document.createElement("label");
+                container.className = "container";
+                insideContainer.className = "inside-container";
+                date.className = "date";
 
+                owner.id = msg.id;
                 owner.innerHTML = msg.owner;
                 message.innerHTML = msg.value;
                 date.innerHTML = days[realDate.getDay()] + " at " + realDate.getHours() + ':' + (realDate.getMinutes() < 10 ? '0' : '') + realDate.getMinutes();
 
-                owner.style.color = "grey";
-                owner.style.fontStyle = "italic";
-                owner.style.fontSize = "12px";
-                owner.style.marginBottom = "5px";
-                owner.style.marginLeft = "15px";
-                if (lastOwner === msg.owner) {
+                if (lastOwner.id === msg.id && lastOwner.innerHTML === msg.owner) {
                     owner.style.fontSize = "0px";
-                    document.getElementById("messages").lastChild.previousElementSibling.style.marginBottom = "5px";
+                    document.getElementById("messages").lastChild.style.marginBottom = "0px";
                 }
 
-                message.style.padding = "10px 15px";
-                message.style.background = "var(--bubble-color)";
-                message.style.color = "white";
-                message.style.marginBottom = "20px";
-                message.style.marginLeft = "10px";
-                message.style.display = "inline-block";
-                message.style.borderRadius = "20px";
-                message.style.maxWidth = "75%";
+                container.appendChild(owner);
+                if (msg.owner === document.getElementById("username").value) {
+                    insideContainer.style.justifyContent = "flex-end";
+                    owner.className = "owner";
+                    owner.style.fontSize = "0px";
+                    message.className = "message myself";
+                    insideContainer.appendChild(date);
+                    insideContainer.appendChild(message);
+                } else {
+                    owner.className = "owner other";
+                    message.className = "message other";
+                    insideContainer.appendChild(message);
+                    insideContainer.appendChild(date);
+                }
+                container.append(insideContainer);
 
-                date.style.color = "white";
-                date.style.marginLeft = "15px";
-
-                document.getElementById("messages").appendChild(owner);
-                document.getElementById("messages").appendChild(message);
-                document.getElementById("messages").appendChild(date);
-                document.getElementById("messages").scrollTop = owner.offsetHeight + owner.offsetTop + message.offsetHeight + message.offsetTop;
+                document.getElementById("messages").appendChild(container);
+                document.getElementById("messages").scrollTop = container.offsetHeight + container.offsetTop;
             });
         </script>
     </body>
