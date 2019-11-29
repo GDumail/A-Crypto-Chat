@@ -94,8 +94,9 @@
             .header {
                 display: flex;
                 margin-bottom: 5px;
+                margin-left: 15px;
                 font-style: italic;
-                font-size: 0px;
+                font-size: 12px;
                 white-space: pre;
                 color: grey;
                 animation: fade-in 1s ease forwards;
@@ -123,14 +124,8 @@
                 background: white;
                 color: black;
             }
-            .myself {
-                margin-right: 15px;
-            }
             .other {
                 margin-left: 15px;
-            }
-            .header.other {
-                font-size: 12px;
             }
             .message.other {
                 background: white;
@@ -225,17 +220,17 @@
 
                 header.appendChild(owner);
                 header.appendChild(date);
+                    header.className = "header";
                 container.appendChild(header);
                 if (id === msg.id && document.getElementById("username").value === msg.owner) {
                     bubble.style.justifyContent = "flex-end";
-                    header.className = "header";
-                    message.className = "message myself";
+                    header.style.justifyContent = "flex-end";
+                    message.className = "message";
                 } else {
-                    header.className = "header other";
                     message.className = "message other";
                 }
                 if (lastOwner.id === msg.id && lastOwner.innerHTML === msg.owner && (Date.now() - lastTime) / 1000 < 120) {
-                    header.className = "header";
+                    header.style.fontSize = "0px";
                     document.getElementById("messages").lastChild.style.marginBottom = "5px";
                 }
                 bubble.appendChild(message);
