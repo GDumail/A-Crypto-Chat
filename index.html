@@ -105,7 +105,7 @@
                 opacity: 0;
                 background: black;
                 border-radius: 20px;
-                box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+                box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.3);
                 padding: 10px 15px;
                 display: inline-block;
                 color: white;
@@ -130,6 +130,7 @@
             .message.other {
                 background: white;
                 color: black;
+                box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
             }
             .message.other::selection {
                 background: black;
@@ -140,16 +141,11 @@
                 color: white;
             }
             .scroll::-webkit-scrollbar {
-                width: 10px;
+                width: 20px;
             }
             .scroll::-webkit-scrollbar-thumb {
-                width: 6px;
-                background: black;
-                border-radius: 10px;
-            }
-            .scroll::-webkit-scrollbar-track {
-                background: white;
-                border-radius: 10px;
+                box-shadow: inset 0 0 10px 10px black;
+                border-left: solid 15px transparent;
             }
             @keyframes fade-in {
                 from { opacity: 0; }
@@ -176,9 +172,9 @@
     </head>
     <body>
         <form id="form" action="">
-            <input autocomplete="off" id="username" maxlength="15" placeholder="Username" required/>
+            <input id="username" autocomplete="off" spellcheck="false" maxlength="15" placeholder="Username" required/>
             <ul id="messages" class="scroll"></ul>
-            <input id="message" autocomplete="off" placeholder="Message" required/><button>Send</button>
+            <input id="message" autocomplete="off" spellcheck="false" placeholder="Message"/><button>Send</button>
         </form>
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -188,6 +184,7 @@
             let lastTime = new Date() - 5000;
             async function onFormSubmit(event) {
                 event.preventDefault();
+                if (document.getElementById("message").value === "") return false;
                 let message = {};
                 message.owner = document.getElementById("username").value;
                 message.value = document.getElementById("message").value;
@@ -199,7 +196,7 @@
             document.getElementById("form").addEventListener("submit", onFormSubmit);
             socket.on("chat message", (msg) => {
                 let lastOwner = "";
-                const days = { 1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday", 7: "Synday" };
+                const days = { 0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday" };
                 const realDate = new Date();
                 if (document.getElementById("messages").childNodes.length !== 0)
                     lastOwner = document.getElementById("messages").lastChild.firstChild.firstChild;
