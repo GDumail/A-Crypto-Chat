@@ -4,11 +4,11 @@
         <title>A-Crypto-Chat</title>
         <style>
             :root {
-                --main-color: #272346;
-                --dark-color: #0c002b;
-                --bubble-color: #8400ff;
-                --personal-bubble-color: #cecece;
-                --light-color: #ddd;
+                --light: #ffffff;
+                --dark: #000000;
+                --middle: grey;
+                --light-transparent: rgba(255, 255, 255, 0.3);
+                --dark-transparent: rgba(0, 0, 0, 0.3);
             }
             * {
                 margin: 0;
@@ -19,56 +19,54 @@
                 font: 13px Helvetica, Arial;
             }
             form {
-                background: white;;
+                background: var(--dark);
                 padding: 3px;
                 position: fixed;
                 bottom: 0;
                 width: 100%;
                 height: 100%;
             }
-            form input {
-                background: white;
+            input {
+                background: var(--light);
                 border: 0;
                 border-radius: 50px;
                 outline: none;
                 padding: 20px;
-                width: calc(100% - 20px);
+                width: calc(100% - 30px);
                 height: 40px;
-                color: black;
+                color: var(--dark);
                 margin-left: 10px;
                 transition: all 0.3s ease;
-                box-shadow: 0px -10px 50px rgba(0, 0, 0, 0.3);
+                box-shadow: 0px -10px 50px var(--light-transparent);
             }
-            form input:focus, input:focus + button {
+            input:focus, input:focus + button {
                 transform: translateY(-5px);
             }
-            form button {
+            button {
                 position: relative;
                 top: -40px;
-                left: calc(100% - 110px);
+                left: calc(100% - 115px);
                 user-select: none;
                 text-transform: uppercase;
                 width: 100px;
                 height: 40px;
-                color: white;
+                color: var(--light);
                 font-size: 16px;
                 outline: none;
                 border-radius: 30px;
                 border: none;
-                background: black;
+                background: var(--dark);
                 transition: all 0.3s ease;
-                box-shadow: 0 0px 50px rgba(0, 0, 0, 0.3);
             }
-            form button:hover {
-                color: black;
-                background: white;
-                box-shadow: 0 0px 50px rgba(0, 0, 0, 0.5);
+            button:hover {
+                color: var(--dark);
+                background: var(--light);
             }
             #messages {
                 list-style-type: none;
                 margin: 0;
                 padding: 0;
-                height: calc(100% - 145px);
+                height: calc(100% - 140px);
                 overflow-y: scroll;
                 margin-top: 20px;
                 margin-bottom: 20px;
@@ -78,7 +76,7 @@
             #username {
                 width: 250px;
                 margin-top: 10px;
-                box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3);
+                box-shadow: 0px 10px 50px var(--light-transparent);
             }
             #username:focus {
                 transform: translateY(5px);
@@ -94,81 +92,113 @@
             .header {
                 display: flex;
                 margin-bottom: 5px;
-                margin-left: 15px;
+                margin-left: 10px;
                 font-style: italic;
                 font-size: 12px;
                 white-space: pre;
-                color: grey;
+                color: var(--middle);
                 animation: fade-in 1s ease forwards;
             }
             .message {
                 opacity: 0;
-                background: black;
+                background: var(--dark);
                 border-radius: 20px;
-                box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.3);
+                box-shadow: -10px 10px 30px var(--light-transparent);
                 padding: 10px 15px;
                 display: inline-block;
-                color: white;
+                color: var(--light);
                 max-width: 40%;
                 transition: all 0.3s ease;
                 animation: fade-in 1s ease forwards;
+            }
+            .other {
+                margin-left: 10px;
+            }
+            .message.other {
+                background: var(--light);
+                color: var(--dark);
+                box-shadow: 10px 10px 30px var(--light-transparent);
             }
             .message:hover {
                 transform: translateY(3px);
             }
             .message::selection {
-                background: white;
-                color: black;
+                background: var(--light);
+                color: var(--dark);
             }
             .message::-moz-selection {
-                background: white;
-                color: black;
-            }
-            .other {
-                margin-left: 15px;
-            }
-            .message.other {
-                background: white;
-                color: black;
-                box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
+                background: var(--light);
+                color: var(--dark);
             }
             .message.other::selection {
-                background: black;
-                color: white;
+                background: var(--dark);
+                color: var(--light);
             }
             .message.other::-moz-selection {
-                background: black;
-                color: white;
+                background: var(--dark);
+                color: var(--light);
             }
             .scroll::-webkit-scrollbar {
                 width: 20px;
             }
             .scroll::-webkit-scrollbar-thumb {
-                box-shadow: inset 0 0 10px 10px black;
+                box-shadow: inset 0 0 10px 10px var(--light-transparent);
                 border-left: solid 15px transparent;
+            }
+            .clear {
+                position: absolute;
+                top: 10px;
+                left: calc(100% - 50px);
+                width: 40px;
+                font-size: 20px;
             }
             @keyframes fade-in {
                 from { opacity: 0; }
                 to   { opacity: 1; }
             }
-            @-moz-keyframes fadein {
+            @-moz-keyframes fade-in {
                 from { opacity: 0; }
                 to   { opacity: 1; }
             }
-            @-webkit-keyframes fadein {
+            @-webkit-keyframes fade-in {
                 from { opacity: 0; }
                 to   { opacity: 1; }
             }
-            @-ms-keyframes fadein {
+            @-ms-keyframes fade-in {
                 from { opacity: 0; }
                 to   { opacity: 1; }
             }
-            @-o-keyframes fadein {
+            @-o-keyframes fade-in {
                 from { opacity: 0; }
                 to   { opacity: 1; }
+            }
+
+            .flash {
+                animation: flash 1s ease forwards;
+            }
+            @keyframes flash {
+                from { background: var(--light); }
+                to   { background: var(--dark); }
+            }
+            @-moz-keyframes flash {
+                from { background: var(--light); }
+                to   { background: var(--dark); }
+            }
+            @-webkit-keyframes flash {
+                from { background: var(--light); }
+                to   { background: var(--dark); }
+            }
+            @-ms-keyframes flash {
+                from { background: var(--light); }
+                to   { background: var(--dark); }
+            }
+            @-o-keyframes flash {
+                from { background: var(--light); }
+                to   { background: var(--dark); }
             }
         </style>
         <link rel="icon" type="image/pgn" href="https://user-images.githubusercontent.com/2795476/51910277-b7e42a80-2409-11e9-98aa-522020814a31.png"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
         <form id="form" action="">
@@ -176,12 +206,23 @@
             <ul id="messages" class="scroll"></ul>
             <input id="message" autocomplete="off" spellcheck="false" placeholder="Message"/><button>Send</button>
         </form>
+        <button class="clear" onclick="clearCache()"><i class="fa fa-trash"></i></button>
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script>
             const socket = io();
-            const id = '_' + Math.random().toString(36).substr(2, 9);
+            let id = localStorage.getItem("acryptochatid");
+            if (!id) {
+                id = '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem("acryptochatid", id);
+            }
+            let messages = JSON.parse(localStorage.getItem("acryptochatmessages"));
+            if (!messages) {
+                messages = [];
+                localStorage.setItem("acryptochatmessages", JSON.stringify(messages));
+            }
             let lastTime = new Date() - 5000;
+            for (msg of messages) addMessage(msg);
             async function onFormSubmit(event) {
                 event.preventDefault();
                 if (document.getElementById("message").value === "") return false;
@@ -194,7 +235,17 @@
                 return false;
             }
             document.getElementById("form").addEventListener("submit", onFormSubmit);
-            socket.on("chat message", (msg) => {
+            function clearCache() {
+                localStorage.removeItem("acryptochatmessages");
+                const messages = document.getElementById("messages");
+                while (messages.firstChild) {
+                    messages.removeChild(messages.firstChild);
+                }
+                document.getElementById("form").classList.remove("flash");
+                void document.getElementById("form").offsetWidth;
+                document.getElementById("form").classList.add("flash");
+            }
+            function addMessage(msg) {
                 let lastOwner = "";
                 const days = { 0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday" };
                 const realDate = new Date();
@@ -219,7 +270,7 @@
                 header.appendChild(date);
                     header.className = "header";
                 container.appendChild(header);
-                if (id === msg.id && document.getElementById("username").value === msg.owner) {
+                if (id === msg.id) {
                     bubble.style.justifyContent = "flex-end";
                     header.style.justifyContent = "flex-end";
                     message.className = "message";
@@ -236,6 +287,11 @@
                 document.getElementById("messages").appendChild(container);
                 document.getElementById("messages").scrollTop = container.offsetHeight + container.offsetTop;
                 lastTime = Date.now();
+            }
+            socket.on("chat message", (msg) => {
+                messages.push(msg);
+                localStorage.setItem("acryptochatmessages", JSON.stringify(messages));
+                addMessage(msg);
             });
         </script>
     </body>
