@@ -7,8 +7,8 @@
                 --light: #ffffff;
                 --dark: #000000;
                 --middle: grey;
-                --light-transparent: rgba(255, 255, 255, 0.3);
-                --dark-transparent: rgba(0, 0, 0, 0.3);
+                --light-alpha: rgba(255, 255, 255, 0.3);
+                --dark-alpha: rgba(0, 0, 0, 0.3);
             }
             * {
                 margin: 0;
@@ -19,7 +19,7 @@
                 font: 13px Helvetica, Arial;
             }
             form {
-                background: var(--dark);
+                background: var(--light);
                 padding: 3px;
                 position: fixed;
                 bottom: 0;
@@ -27,40 +27,40 @@
                 height: 100%;
             }
             input {
-                background: var(--light);
+                background: white;
                 border: 0;
                 border-radius: 50px;
                 outline: none;
                 padding: 20px;
                 width: calc(100% - 30px);
                 height: 40px;
-                color: var(--dark);
+                color: black;
                 margin-left: 10px;
-                transition: all 0.3s ease;
-                box-shadow: 0px -10px 50px var(--light-transparent);
+                transition: all 1s ease;
+                box-shadow: 0px -10px 50px var(--dark-alpha);
             }
             input:focus, input:focus + button {
                 transform: translateY(-5px);
             }
             button {
                 position: relative;
-                top: -40px;
+                top: -41px;
                 left: calc(100% - 115px);
                 user-select: none;
                 text-transform: uppercase;
                 width: 100px;
-                height: 40px;
-                color: var(--light);
+                height: 42px;
+                color: white;
                 font-size: 16px;
                 outline: none;
                 border-radius: 30px;
                 border: none;
-                background: var(--dark);
-                transition: all 0.3s ease;
+                background: black;
+                transition: all 1s ease;
             }
             button:hover {
-                color: var(--dark);
-                background: var(--light);
+                color: black;
+                background: white;
             }
             #messages {
                 list-style-type: none;
@@ -76,7 +76,7 @@
             #username {
                 width: 250px;
                 margin-top: 10px;
-                box-shadow: 0px 10px 50px var(--light-transparent);
+                box-shadow: 0px 10px 50px var(--dark-alpha);
             }
             #username:focus {
                 transform: translateY(5px);
@@ -103,7 +103,7 @@
                 opacity: 0;
                 background: var(--dark);
                 border-radius: 20px;
-                box-shadow: -10px 10px 30px var(--light-transparent);
+                box-shadow: -10px 10px 30px var(--dark-alpha);
                 padding: 10px 15px;
                 display: inline-block;
                 color: var(--light);
@@ -115,42 +115,80 @@
                 margin-left: 10px;
             }
             .message.other {
-                background: var(--light);
-                color: var(--dark);
-                box-shadow: 10px 10px 30px var(--light-transparent);
+                background: white;
+                color: black;
+                box-shadow: 10px 10px 30px var(--dark-alpha);
             }
             .message:hover {
                 transform: translateY(3px);
             }
             .message::selection {
-                background: var(--light);
-                color: var(--dark);
+                background: var(--dark);
+                color: var(--light);
             }
             .message::-moz-selection {
+                background: var(--dark);
+                color: var(--light);
+            }
+            .message.other::selection {
                 background: var(--light);
                 color: var(--dark);
             }
-            .message.other::selection {
-                background: var(--dark);
-                color: var(--light);
-            }
             .message.other::-moz-selection {
-                background: var(--dark);
-                color: var(--light);
+                background: var(--light);
+                color: var(--dark);
             }
             .scroll::-webkit-scrollbar {
                 width: 20px;
             }
             .scroll::-webkit-scrollbar-thumb {
-                box-shadow: inset 0 0 10px 10px var(--light-transparent);
+                box-shadow: inset 0 0 10px 10px var(--dark-alpha);
                 border-left: solid 15px transparent;
             }
             .clear {
+                background: var(--light);
+                color: var(--dark);
                 position: absolute;
                 top: 10px;
                 left: calc(100% - 50px);
                 width: 40px;
                 font-size: 20px;
+            }
+            .clear:hover {
+                background: var(--dark);
+                color: var(--light);
+            }
+            .theme {
+                background: transparent;
+                color: var(--dark);
+                position: absolute;
+                top: 10px;
+                left: calc(100% - 100px);
+                width: 40px;
+                font-size: 20px;
+            }
+            .theme:hover {
+                background: transparent;
+                color: var(--dark);
+            }
+            button .icon-default {
+                top: 25%;
+                left: 25%;
+                position: absolute;
+                transition: opacity 1s;
+            }
+            button .icon-hover {
+                top: 25%;
+                left: 25%;
+                position: absolute;
+                transition: opacity 1s;
+                opacity: 0;
+            }
+            button:hover .icon-hover {
+                opacity: 1;
+            }
+            button:hover .icon-default {
+                opacity: 0;
             }
             @keyframes fade-in {
                 from { opacity: 0; }
@@ -177,28 +215,28 @@
                 animation: flash 1s ease forwards;
             }
             @keyframes flash {
-                from { background: var(--light); }
-                to   { background: var(--dark); }
+                from { background: var(--dark); }
+                to   { background: var(--light); }
             }
             @-moz-keyframes flash {
-                from { background: var(--light); }
-                to   { background: var(--dark); }
+                from { background: var(--dark); }
+                to   { background: var(--light); }
             }
             @-webkit-keyframes flash {
-                from { background: var(--light); }
-                to   { background: var(--dark); }
+                from { background: var(--dark); }
+                to   { background: var(--light); }
             }
             @-ms-keyframes flash {
-                from { background: var(--light); }
-                to   { background: var(--dark); }
+                from { background: var(--dark); }
+                to   { background: var(--light); }
             }
             @-o-keyframes flash {
-                from { background: var(--light); }
-                to   { background: var(--dark); }
+                from { background: var(--dark); }
+                to   { background: var(--light); }
             }
         </style>
         <link rel="icon" type="image/pgn" href="https://user-images.githubusercontent.com/2795476/51910277-b7e42a80-2409-11e9-98aa-522020814a31.png"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     </head>
     <body>
         <form id="form" action="">
@@ -207,20 +245,22 @@
             <input id="message" autocomplete="off" spellcheck="false" placeholder="Message"/><button>Send</button>
         </form>
         <button class="clear" onclick="clearCache()"><i class="fa fa-trash"></i></button>
+        <button class="theme" onclick="changeTheme()">
+            <i class="far fa-moon icon-default"></i>
+            <i class="fa fa-moon icon-hover"></i>
+        </button>
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script>
             const socket = io();
-            let id = localStorage.getItem("acryptochatid");
-            if (!id) {
-                id = '_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem("acryptochatid", id);
+            function getStorage(key, defaultValue) {
+                if (!localStorage.getItem(key)) localStorage.setItem(key, defaultValue);
+                return localStorage.getItem(key);
             }
-            let messages = JSON.parse(localStorage.getItem("acryptochatmessages"));
-            if (!messages) {
-                messages = [];
-                localStorage.setItem("acryptochatmessages", JSON.stringify(messages));
-            }
+            const id = getStorage("acryptochatid", '_' + Math.random().toString(36).substr(2, 9));
+            let theme = getStorage("acryptochattheme", "light");
+            let messages = JSON.parse(getStorage("acryptochatmessages", JSON.stringify([])));
+            if (theme === "dark") setDarkTheme();
             let lastTime = new Date() - 5000;
             for (msg of messages) addMessage(msg);
             async function onFormSubmit(event) {
@@ -238,9 +278,32 @@
             function clearCache() {
                 localStorage.removeItem("acryptochatmessages");
                 const messages = document.getElementById("messages");
+                document.getElementById("form").style.background = "var(--light)";
                 while (messages.firstChild) {
                     messages.removeChild(messages.firstChild);
                 }
+                document.getElementById("form").classList.remove("flash");
+                void document.getElementById("form").offsetWidth;
+                document.getElementById("form").classList.add("flash");
+            }
+            function setLightTheme() {
+                    document.documentElement.style.setProperty("--light", "#ffffff");
+                    document.documentElement.style.setProperty("--dark", "#000000");
+                    document.documentElement.style.setProperty("--light-alpha", "rgba(255, 255, 255, 0.3)");
+                    document.documentElement.style.setProperty("--dark-alpha", "rgba(0, 0, 0, 0.3)");
+            }
+            function setDarkTheme() {
+                document.documentElement.style.setProperty("--light", "#000000");
+                document.documentElement.style.setProperty("--dark", "#ffffff");
+                document.documentElement.style.setProperty("--light-alpha", "rgba(0, 0, 0, 0.3)");
+                document.documentElement.style.setProperty("--dark-alpha", "rgba(255, 255, 255, 0.3)");
+            }
+            function changeTheme() {
+                if (theme === "light") theme = "dark";
+                else theme = "light";
+                localStorage.setItem("acryptochattheme", theme);
+                if (theme === "light") setLightTheme();
+                else setDarkTheme();
                 document.getElementById("form").classList.remove("flash");
                 void document.getElementById("form").offsetWidth;
                 document.getElementById("form").classList.add("flash");
