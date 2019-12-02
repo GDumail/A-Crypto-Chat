@@ -234,11 +234,141 @@
                 from { background: var(--dark); }
                 to   { background: var(--light); }
             }
+
+            .frame {
+                position: absolute;
+                top: calc(50% - 200px);
+                left: calc(50% - 200px);
+                width: 400px;
+                height: 400px;
+                border-radius: 2px;
+                color: white;
+            }
+            .dot-1 {
+                position: absolute;
+                z-index: 3;
+                width: 30px;
+                height: 30px;
+                top: calc(50% - 15px);
+                left: calc(50% - 15px);
+                background: white;
+                border-radius: 50%;
+                -webkit-animation-fill-mode: both;
+                        animation-fill-mode: both;
+                -webkit-animation: jump-jump-1 2s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
+                        animation: jump-jump-1 2s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
+            }
+            .dot-2 {
+                position: absolute;
+                z-index: 2;
+                width: 60px;
+                height: 60px;
+                top: calc(50% - 30px);
+                left: calc(50% - 30px);
+                background: white;
+                border-radius: 50%;
+                -webkit-animation-fill-mode: both;
+                        animation-fill-mode: both;
+                -webkit-animation: jump-jump-2 2s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
+                        animation: jump-jump-2 2s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
+            }
+            .dot-3 {
+                position: absolute;
+                z-index: 1;
+                width: 90px;
+                height: 90px;
+                top: calc(50% - 45px);
+                left: calc(50% - 45px);
+                background: white;
+                border-radius: 50%;
+                -webkit-animation-fill-mode: both;
+                        animation-fill-mode: both;
+                -webkit-animation: jump-jump-3 2s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
+                        animation: jump-jump-3 2s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite alternate;
+            }
+            @-webkit-keyframes jump-jump-1 {
+                0%, 70% {
+                    box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.2);
+                    -webkit-transform: scale(0);
+                            transform: scale(0);
+                }
+                100% {
+                    box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.3);
+                    -webkit-transform: scale(1);
+                            transform: scale(1);
+                }
+            }
+            @keyframes jump-jump-1 {
+                0%, 70% {
+                    box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.2);
+                    -webkit-transform: scale(0);
+                            transform: scale(0);
+                }
+                100% {
+                    box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.3);
+                    -webkit-transform: scale(1);
+                            transform: scale(1);
+                }
+            }
+            @-webkit-keyframes jump-jump-2 {
+                0%, 40% {
+                    box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.2);
+                    -webkit-transform: scale(0);
+                            transform: scale(0);
+                }
+                100% {
+                    box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.3);
+                    -webkit-transform: scale(1);
+                            transform: scale(1);
+                }
+            }
+            @keyframes jump-jump-2 {
+                0%, 40% {
+                    box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.2);
+                    -webkit-transform: scale(0);
+                            transform: scale(0);
+                }
+                100% {
+                    box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.3);
+                    -webkit-transform: scale(1);
+                            transform: scale(1);
+                }
+            }
+            @-webkit-keyframes jump-jump-3 {
+                0%, 10% {
+                    box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.2);
+                    -webkit-transform: scale(0);
+                            transform: scale(0);
+                }
+                100% {
+                    box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.3);
+                    -webkit-transform: scale(1);
+                            transform: scale(1);
+                }
+            }
+            @keyframes jump-jump-3 {
+                0%, 10% {
+                    box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.2);
+                    -webkit-transform: scale(0);
+                            transform: scale(0);
+                }
+                100% {
+                    box-shadow: 10px 10px 15px 0 rgba(0, 0, 0, 0.3);
+                    -webkit-transform: scale(1);
+                            transform: scale(1);
+                }
+            }
+
         </style>
         <link rel="icon" type="image/pgn" href="https://user-images.githubusercontent.com/2795476/51910277-b7e42a80-2409-11e9-98aa-522020814a31.png"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
     </head>
     <body>
+        <div id="loading" class="frame">
+            <div class="dot-1"></div>
+            <div class="dot-2"></div>
+            <div class="dot-3"></div>
+        </div>
         <form id="form" action="">
             <input id="username" autocomplete="off" spellcheck="false" maxlength="15" placeholder="Username" required/>
             <ul id="messages" class="scroll"></ul>
@@ -263,7 +393,10 @@
             let messages = JSON.parse(getStorage("acryptochatmessages", JSON.stringify([])));
             if (theme === "dark") setDarkTheme();
             let lastTime = new Date() - 5000;
+            document.getElementById("messages").style.visibility = "hidden";
             for (msg of messages) addMessage(msg);
+            document.getElementById("messages").style.visibility = "visible";
+            document.getElementById("loading").style.visibility = "hidden";
             async function onFormSubmit(event) {
                 event.preventDefault();
                 if (document.getElementById("message").value === "") return false;
@@ -283,11 +416,12 @@
             }
             document.getElementById("form").addEventListener("submit", onFormSubmit);
             function clearCache() {
+                const messagesList = document.getElementById("messages");
                 localStorage.removeItem("acryptochatmessages");
-                const messages = document.getElementById("messages");
+                messages = JSON.parse(getStorage("acryptochatmessages", JSON.stringify([])));
                 document.getElementById("form").style.background = "var(--light)";
-                while (messages.firstChild) {
-                    messages.removeChild(messages.firstChild);
+                while (messagesList.firstChild) {
+                    messagesList.removeChild(messagesList.firstChild);
                 }
                 document.getElementById("form").classList.remove("flash");
                 void document.getElementById("form").offsetWidth;
