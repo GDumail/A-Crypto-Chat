@@ -1,6 +1,9 @@
 <!doctype html>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie-edge">
         <title>A-Crypto-Chat</title>
         <style>
             :root {
@@ -479,7 +482,6 @@
                 } else {
                     message.className = "message other";
                 }
-                console.log(lastTime + " - " + msg.time);
                 if (lastOwner.id === msg.id && lastOwner.innerHTML === msg.owner && (msg.time - lastTime) / 1000 < 120) {
                     header.style.fontSize = "0px";
                     document.getElementById("messages").lastChild.style.marginBottom = "5px";
